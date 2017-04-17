@@ -90,3 +90,9 @@ ENV/
 
 # Don't send virtual environment
 env/
+
+
+#### custom additions
+
+# ignore test out files
+**/testWavOut.wav
