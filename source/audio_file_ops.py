@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 ### audio_file_ops.py
 #
-#   Description: functions included allow for various audio file operations 
-#       (i.e. unpack_wav, pack_wav) 
+#   Description: functions included allow for various audio file operations
+#       (i.e. unpack_wav, pack_wav)
 #
 #   Requires: numpy cffi pysoundfile
 #       (sudo apt-get install python3-numpy python3-cffi libsndfile1)
@@ -10,7 +10,7 @@
 #
 #   Tests available: python3 -m doctest audio_file_ops.py
 #
-#   Note useful link on WAV files: 
+#   Note useful link on WAV files:
 #       (https://web.archive.org/web/20140221054954/http://home.roadrunner.com/~jgglatt/tech/wave.htm)
 #
 #   Note 2 old implementations available in old folder
@@ -48,8 +48,8 @@ def unpack_wav(wavFile=""):
     if wavFile is "":
         wavFile = audioFileDir + testGuitarFile
 
-    try: 
-        data, rate = sf.read(wavFile)
+    try:
+        data, rate = sf.read(wavFile, dtype='int16')
         return rate, data
 
     except Exception as e:
@@ -80,7 +80,7 @@ def pack_wav(rate, data, wavFile=""):
     if wavFile is "":
         wavFile = audioFileDir + testWavFileOut
 
-    try: 
+    try:
         sf.write(wavFile, data, rate)
         return True
 
@@ -88,6 +88,33 @@ def pack_wav(rate, data, wavFile=""):
         print('There was an error in writing to the desired WAV file:')
         print(e)
         return False
+
+def superimpose(wave1, wave2):
+    """
+    Superimpose two numpy arrays.
+
+    >>> a = np.array([1,1,1])
+    >>> b = np.array([2,2,2])
+    >>> superimpose(a,b)
+    array([3, 3, 3])
+
+    >>> c = np.array([1])
+    >>> d = np.array([2,2,2])
+    array([3, 2, 2])
+    """
+    assert type(wave1) == np.ndarray
+    assert type(wave2) == np.ndarray
+
+    if len(wave1) > len(wave2):
+        zeros = np.zeros(len(wave1) - len(wave2))
+        wave2 = np.concatenate((wave2, zeros))
+    elif len(wave2) > len(wave1):
+        zeros = np.zeros(len(wave2) - len(wave1))
+        wave1 = np.concatenate((wave1, zeros))
+
+    return wave1.astype(np.float64) + wave2.astype(np.float64)
+
+def convolve(wave1, wave2)
 
 # example usage / testing:
 #rate, data = unpack_wav()           # defaults to "../Test Files/ThuMar2302_40_45UTC2017.wav"
