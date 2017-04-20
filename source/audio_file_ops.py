@@ -114,7 +114,7 @@ def superimpose(wave1, wave2):
 
     return wave1.astype(np.float64) + wave2.astype(np.float64)
 
-def convolve(wave1, wave2)
+#def convolve(wave1, wave2) :# NEEDS TO BE UPDATED
 
 # example usage / testing:
 #rate, data = unpack_wav()           # defaults to "../Test Files/ThuMar2302_40_45UTC2017.wav"
