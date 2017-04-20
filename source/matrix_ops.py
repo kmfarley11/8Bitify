@@ -22,7 +22,8 @@ testWavFileOut = "testWavOut.wav"
 
 
 def eight_bitify(data):
-    """ takes numpy matrix of audio data, returns modded numpy data
+    """ 
+    takes numpy matrix of audio data, returns modded numpy data
 
     >>> t = np.array([1, 2, -5, 4, 5, 6, 120, 355, -500])
     >>> t
@@ -37,10 +38,6 @@ def eight_bitify(data):
               4.92125984,    4.92125984,  119.37007874,  355.        , -500.        ])
 
     """
-    #moddedData = data#np.array(data)
-    #for index in range(len(moddedData)):
-    #    moddedData[index] = moddedData[index] >> 8
-    
     # get max / min, then set discrete points for resolution depicted
     moddedData = np.array(data)
     hi = np.max(data)
@@ -53,19 +50,24 @@ def eight_bitify(data):
 
     # return discretized data
     return moddedData
-    return moddedData
 
 
-def create_square(rate, sample_length, frequency=100, amplitude=0.05):
+def create_square(rate, sampleLength, frequency=100, amplitude=0.05):
     """
     Create and return a NumPy square wave with the given parameters.
 
-    Rate isthe sample rate, in samples per second.
+    Rate is the sample rate, in samples per second. sampleLength is num samples in data
     Therefore, create (rate/frequency) samples of amplitude before switching polarity.
+
+    >>> create_square(500, 10, frequency=500, amplitude=1)
+    array([ 1., -1., -1.,  1.,  1., -1., -1.,  1.,  1., -1.])
+    
     """
-    # Current interation of this is naive. Could use improvements.
-    t = np.arange(sample_length)
-    square = signal.square(2 * np.pi * t * frequency) * amplitude
+    totalTime = sampleLength * rate
+
+    t = np.linspace(0, totalTime, sampleLength) # this creates t indicating seconds with the same dimensions as incoming data
+
+    square = signal.square(2 * np.pi * frequency * t) * amplitude
 
     return square
 
@@ -98,6 +100,12 @@ def superimpose(wave1, wave2):
 
 
 def convolve(wave1, wave2, mode='full', method='auto'):
+    """
+    convolute one wave on top of another
+    
+    needs doctests and verification for what we are trying to do with it
+    """
+    
     return signal.convolve(wave1, wave2, mode, method)
 
 
