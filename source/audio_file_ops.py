@@ -17,8 +17,9 @@
 #       (as a first attempt, python's built in wave modules were used as well as scipy and numpy)
 ###
 
-import numpy as np      # return wav contents for later modifications
-import soundfile as sf  # to read and write soundfiles easily
+import numpy as np       # return wav contents for later modifications
+import soundfile as sf   # to read and write soundfiles easily
+import sounddevice as sd # to play numpy arrays through system speakers
 
 # global vars for convenience / testing
 audioFileDir = "../Test Files/"
@@ -89,32 +90,13 @@ def pack_wav(rate, data, wavFile=""):
         print(e)
         return False
 
-def superimpose(wave1, wave2):
-    """
-    Superimpose two numpy arrays.
 
-    >>> a = np.array([1,1,1])
-    >>> b = np.array([2,2,2])
-    >>> superimpose(a,b)
-    array([3, 3, 3])
+def play(rate, data):
+    sd.play(data, rate)
 
-    >>> c = np.array([1])
-    >>> d = np.array([2,2,2])
-    array([3, 2, 2])
-    """
-    assert type(wave1) == np.ndarray
-    assert type(wave2) == np.ndarray
 
-    if len(wave1) > len(wave2):
-        zeros = np.zeros(len(wave1) - len(wave2))
-        wave2 = np.concatenate((wave2, zeros))
-    elif len(wave2) > len(wave1):
-        zeros = np.zeros(len(wave2) - len(wave1))
-        wave1 = np.concatenate((wave1, zeros))
-
-    return wave1.astype(np.float64) + wave2.astype(np.float64)
-
-#def convolve(wave1, wave2) :# NEEDS TO BE UPDATED
+def stop():
+    sd.stop()
 
 # example usage / testing:
 #rate, data = unpack_wav()           # defaults to "../Test Files/ThuMar2302_40_45UTC2017.wav"

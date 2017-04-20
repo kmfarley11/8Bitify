@@ -12,12 +12,14 @@
 ###
 
 import numpy as np      # matrix ops via numpy: audio data of shape (num_data, num_channels)
+from scipy import signal
 
 # global vars for convenience / testing
 audioFileDir = "../Test Files/"
 testOrchFile = "383929__oymaldonado__uplifting-orchestra.wav"
 testGuitarFile = "ThuMar2302_40_45UTC2017.wav"
 testWavFileOut = "testWavOut.wav"
+
 
 def eight_bitify(data):
     """ takes numpy matrix of audio data, returns modded numpy data
@@ -53,20 +55,60 @@ def eight_bitify(data):
     return moddedData
     return moddedData
 
+
 def create_square(rate, sample_length, frequency=100, amplitude=0.05):
     """
     Create and return a NumPy square wave with the given parameters.
 
-    Rate is the sample rate, in samples per second.
+    Rate isthe sample rate, in samples per second.
     Therefore, create (rate/frequency) samples of amplitude before switching polarity.
     """
     # Current interation of this is naive. Could use improvements.
-    from scipy import signal
-
     t = np.arange(sample_length)
     square = signal.square(2 * np.pi * t * frequency) * amplitude
 
     return square
+
+
+def superimpose(wave1, wave2):
+    """
+    Superimpose two numpy arrays.
+
+    >>> a = np.array([1,1,1])
+    >>> b = np.array([2,2,2])
+    >>> superimpose(a,b)
+    array([ 3.,  3.,  3.])
+
+    >>> c = np.array([1])
+    >>> d = np.array([2,2,2])
+    >>> superimpose(d,c)
+    array([ 3.,  2.,  2.])
+    """
+    assert type(wave1) == np.ndarray
+    assert type(wave2) == np.ndarray
+
+    if len(wave1) > len(wave2):
+        zeros = np.zeros(len(wave1) - len(wave2))
+        wave2 = np.concatenate((wave2, zeros))
+    elif len(wave2) > len(wave1):
+        zeros = np.zeros(len(wave2) - len(wave1))
+        wave1 = np.concatenate((wave1, zeros))
+
+    return wave1.astype(np.float64) + wave2.astype(np.float64)
+
+
+def convolve(wave1, wave2, mode='full', method='auto'):
+    return signal.convolve(wave1, wave2, mode, method)
+
+
+def split_channel(data):
+    rows, cols = data.shape
+    return data[:,0], data[:,1]
+
+
+def make_mono(data):
+    return (data.sum(axis=1)/2).astype('int16')
+
 
 def plot(t, array):
     import matplotlib.pyplot as plt
