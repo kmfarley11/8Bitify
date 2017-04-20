@@ -19,6 +19,7 @@
 
 import numpy as np      # return wav contents for later modifications
 import soundfile as sf  # to read and write soundfiles easily
+import sounddevice as sd
 
 # global vars for convenience / testing
 audioFileDir = "../Test Files/"
@@ -114,7 +115,12 @@ def superimpose(wave1, wave2):
 
     return wave1.astype(np.float64) + wave2.astype(np.float64)
 
-def convolve(wave1, wave2)
+def play(rate, data):
+    sd.play(data, rate)
+
+def stop():
+    sd.stop()
+
 
 # example usage / testing:
 #rate, data = unpack_wav()           # defaults to "../Test Files/ThuMar2302_40_45UTC2017.wav"

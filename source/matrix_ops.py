@@ -12,6 +12,7 @@
 ###
 
 import numpy as np      # matrix ops via numpy: audio data of shape (num_data, num_channels)
+from scipy import signal
 
 # global vars for convenience / testing
 audioFileDir = "../Test Files/"
@@ -37,7 +38,7 @@ def eight_bitify(data):
     moddedData = data#np.array(data)
     for index in range(len(moddedData)):
         moddedData[index] = moddedData[index] >> 8
-        
+
 
     # do 8bit rectification here...
     # probably will use np.where, or maybe use a lambda function, math function, or a cast
@@ -48,16 +49,25 @@ def create_square(rate, sample_length, frequency=100, amplitude=0.05):
     """
     Create and return a NumPy square wave with the given parameters.
 
-    Rate is the sample rate, in samples per second.
+    Rate isthe sample rate, in samples per second.
     Therefore, create (rate/frequency) samples of amplitude before switching polarity.
     """
     # Current interation of this is naive. Could use improvements.
-    from scipy import signal
-
     t = np.arange(sample_length)
     square = signal.square(2 * np.pi * t * frequency) * amplitude
 
     return square
+
+
+def convolve(wave1, wave2, mode='full', method='auto'):
+    return signal.convolve(wave1, wave2, mode, method)
+
+def split_channel(data):
+    rows, cols = data.shape
+    return data[:,0], data[:,1]
+
+def make_mono(data):
+    return (data.sum(axis=1)/2).astype('int16')
 
 def plot(t, array):
     import matplotlib.pyplot as plt
