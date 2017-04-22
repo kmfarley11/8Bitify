@@ -92,6 +92,7 @@ def pack_wav(rate, data, wavFile=""):
 
 
 def play(rate, data):
+    print("in play")
     sd.play(data, rate)
 
 
