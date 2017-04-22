@@ -23,8 +23,8 @@ import sounddevice as sd # to play numpy arrays through system speakers
 
 # global vars for convenience / testing
 audioFileDir = "../Test Files/"
-testOrchFile = "383929__oymaldonado__uplifting-orchestra.wav"
-testGuitarFile = "ThuMar2302_40_45UTC2017.wav"
+testOrchFile = "Uplifting.wav"
+testGuitarFile = "Guitar.wav"
 testWavFileOut = "testWavOut.wav"
 
 
