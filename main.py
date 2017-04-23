@@ -2,6 +2,7 @@
 
 import sys
 import argparse
+import numpy as np
 from source.audio_file_ops import *
 from source.matrix_ops import *
 import sounddevice as sd
@@ -65,21 +66,19 @@ elif not rate or not data.any():
 # Perform operations
 finalWAV = data
 finalRate = rate
-print(args.ops)
 if args.ops:
-    if data != None:
+    if data is not None:
         finalWAV = data
-    elif generated != None:
+    elif generated is not None:
         finalWAV = generated
     else:
         print('No audio files provided/generated. Exiting.')
         sys.exit()
 
     for operation in args.ops:
-        print(operation)
         operationFunc = OPERATIONS[operation]
         if operation in ('superimpose', 'convolve'):
-            if generated != None:
+            if generated is not None:
                 finalWAV = operationFunc(finalWAV, generated)
         
         elif operation in ('play') and rate and data.any():
@@ -95,9 +94,9 @@ if args.ops:
             print('File written')
         
         elif operation in ('plot'):
-            totalTime = len(data) * rate
-            t = linspace(0, totalTime, len(data))
-            operationFunc(t, data)
+            totalTime = len(finalWAV) * rate
+            t = np.linspace(0, totalTime, len(finalWAV))
+            operationFunc(t, finalWAV)
         
         elif operation in ('8bitify'):
             if args.bits:
