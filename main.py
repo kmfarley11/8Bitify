@@ -48,6 +48,8 @@ rate, data = None, None
 if args.wav:
     try:
         rate, data = unpack_wav(args.wav)
+        if len(data.shape) > 1:
+            data = make_mono(data) # we are only prepared for mono data...
     except:
         print("Could not load file", args.wav)
 

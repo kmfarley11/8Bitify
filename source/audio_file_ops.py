@@ -4,9 +4,8 @@
 #   Description: functions included allow for various audio file operations
 #       (i.e. unpack_wav, pack_wav)
 #
-#   Requires: numpy cffi pysoundfile
-#       (sudo apt-get install python3-numpy python3-cffi libsndfile1)
-#       (sudo python3 -m pip install pysoundfile)
+#   Requires: numpy cffi
+#       (sudo apt-get install python3-numpy)
 #
 #   Tests available: python3 -m doctest audio_file_ops.py
 #
@@ -19,7 +18,6 @@
 
 import numpy as np       # return wav contents for later modifications
 import soundfile as sf   # to read and write soundfiles easily
-import sounddevice as sd # to play numpy arrays through system speakers
 
 # global vars for convenience / testing
 audioFileDir = "Test Files/"
@@ -35,7 +33,7 @@ def unpack_wav(wavFile=""):
     >>> rate, data = unpack_wav(wavFile)
     >>> rate, data.shape
     (44100, (1321976,))
-    >>> wavFile = audioFileDir + testOrchFile
+    >>> wavFile = '../' + audioFileDir + testOrchFile
     >>> rate, data = unpack_wav(wavFile)
     >>> rate, data.shape
     (44100, (3361977, 2))
@@ -62,7 +60,7 @@ def unpack_wav(wavFile=""):
 def pack_wav(rate, data, wavFile=""):
     """Takes sample rate + audio content + new file path and writes to new wav, returns success status
 
-    >>> wavFile = audioFileDir + testGuitarFile
+    >>> wavFile = '../' + audioFileDir + testGuitarFile
     >>> rate, data = unpack_wav(wavFile)
     >>> rate, data.shape
     (44100, (1321976,))
@@ -89,15 +87,3 @@ def pack_wav(rate, data, wavFile=""):
         print('There was an error in writing to the desired WAV file:')
         print(e)
         return False
-
-
-def play(rate, data):
-    sd.play(data, rate)
-
-
-def stop():
-    sd.stop()
-
-# example usage / testing:
-#rate, data = unpack_wav()           # defaults to "../Test Files/ThuMar2302_40_45UTC2017.wav"
-#success = pack_wav(rate, data, "")  # defaults to "../Test Files/testWavOut.wav"

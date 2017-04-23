@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 ### matrix_ops.py
 #
-#   Description: functions included allow for various audio file operations
+#   Description: functions included allow for various (audio) data operations
 #       (i.e. eight_bitify, superimpose_square)
 #
-#   Requires: numpy
-#       (sudo apt-get install python3-numpy)
+#   Requires: numpy, scipy
+#       (sudo apt-get install python3-numpy python3-scipy)
 #
 #   Tests available: python3 -m doctest matrix_ops.py
 #
@@ -121,7 +121,18 @@ def split_channel(data):
 
 
 def make_mono(data):
-    return (data.sum(axis=1)/2).astype(str(data.dtype))
+    """
+    given audio data matrix with any # channels, compress to 1 channel and return that data
+
+    >>> a = np.array([[1, 2, 3], [4, 5, 6], [0, 0, 0]])
+    >>> make_mono(a)
+    array([2, 5, 0])
+    >>> b = np.array([[0, 1], [-1, 3], [0, 0]])
+    >>> make_mono(b)
+    array([0, 1, 0])
+
+    """
+    return (data.sum(axis=1)/data.shape[-1]).astype(str(data.dtype))
 
 
 def plot(t, array):
