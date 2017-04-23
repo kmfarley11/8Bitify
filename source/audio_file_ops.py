@@ -22,7 +22,7 @@ import soundfile as sf   # to read and write soundfiles easily
 import sounddevice as sd # to play numpy arrays through system speakers
 
 # global vars for convenience / testing
-audioFileDir = "../Test Files/"
+audioFileDir = "Test Files/"
 testOrchFile = "Uplifting.wav"
 testGuitarFile = "Guitar.wav"
 testWavFileOut = "testWavOut.wav"
@@ -92,7 +92,6 @@ def pack_wav(rate, data, wavFile=""):
 
 
 def play(rate, data):
-    print("in play")
     sd.play(data, rate)
 
 

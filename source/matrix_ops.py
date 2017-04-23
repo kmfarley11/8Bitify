@@ -67,7 +67,8 @@ def create_square(rate, sampleLength, frequency=100, amplitude=0.05):
 
     t = np.linspace(0, totalTime, sampleLength) # this creates t indicating seconds with the same dimensions as incoming data
 
-    square = signal.square(2 * np.pi * frequency * t) * amplitude
+    square = signal.square(2 * np.pi * frequency * t) 
+    square *= amplitude
 
     return square
 
@@ -101,7 +102,9 @@ def superimpose(wave1, wave2):
 
     return wave1.astype(w1type) + wave2.astype(w2type)
 
+convolve = signal.convolve
 
+'''
 def convolve(wave1, wave2, mode='full', method='auto'):
     """
     convolute one wave on top of another
@@ -110,7 +113,7 @@ def convolve(wave1, wave2, mode='full', method='auto'):
     """
     
     return signal.convolve(wave1, wave2, mode, method).astype(str(wave1.dtype))
-
+'''
 
 def split_channel(data):
     rows, cols = data.shape
